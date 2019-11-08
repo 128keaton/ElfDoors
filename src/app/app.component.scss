@@ -1,0 +1,17 @@
+.content {
+  padding: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+h1.title {
+  text-align: center;
+  font-size: 3.4em;
+  background-color: #989696;
+  color: transparent;
+  text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);
+  -webkit-background-clip: text;
+}
+

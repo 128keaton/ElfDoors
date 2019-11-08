@@ -1,0 +1,9 @@
+<countdown #countdownComponent [config]="countdownConfig" (event)="updateDoors($event)"></countdown>
+<a class="update-button" (click)="forceUpdateDoors()">Update Now</a>
+<div class="doors">
+  <div *ngFor="let door of (doors | async)" class="door-status door-status-{{door.status | lowercase}}" @fadeIn>
+    <h1 class="door-name">{{door.name}}</h1>
+    <h2 class="door-status">{{door.isClosed ? 'Closed' : 'Open'}}</h2>
+    <h3 class="door-status-raw">{{door.status}}</h3>
+  </div>
+</div>

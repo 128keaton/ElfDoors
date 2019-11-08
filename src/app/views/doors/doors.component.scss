@@ -1,0 +1,92 @@
+:host {
+  width: 100%;
+  display: block;
+}
+
+countdown {
+  margin: 2em auto;
+  display: block;
+  width: 100%;
+  text-align: center;
+
+  ::ng-deep {
+    span {
+      color: #a4a4a4;
+      font-size: 1.2em;
+    }
+  }
+}
+
+.update-button {
+  display: block;
+  margin: 2em auto;
+  width: 100px;
+  text-align: center;
+  padding: 1em;
+  background-color: white;
+  color: #3366FF;
+  box-shadow: 0 0.5px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e9e9e9;
+    color: #3162f4;
+  }
+}
+
+.doors {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  div.door-status {
+    padding: 2em;
+    text-align: center;
+    flex: 1;
+    margin: 1em;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+
+    h1.door-name {
+      margin-bottom: 0;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.61);
+      color: white;
+      font-size: 3em;
+      font-weight: normal;
+    }
+
+    h2.door-status {
+      margin-bottom: 0;
+      margin-top: 0.6rem;
+      padding-bottom: 4px;
+      color: white;
+      font-weight: normal;
+    }
+
+    h3.door-status-raw {
+      margin-top: 4px;
+      font-size: 1rem;
+      font-weight: normal;
+      color: rgba(255, 255, 255, 0.49);
+    }
+  }
+
+  div.door-status-forcedopen {
+    background-color: #FF3A28;
+  }
+
+  div.door-status-closednormal {
+    background-color: #1BD365;
+  }
+
+  div.door-status-opennormal {
+    background-color: #3366FF;
+  }
+
+  div.door-status-heldopen {
+    background-color: #FFF026;
+  }
+}
