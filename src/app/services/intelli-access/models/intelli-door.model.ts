@@ -74,4 +74,12 @@ export class IntelliDoor extends Serializable {
   get isClosed(): boolean {
     return this.status === IntelliDoorStatus.close;
   }
+
+  updateHash: string;
+
+  constructor() {
+    super();
+
+    this.updateHash = (new Date()).toLocaleTimeString('en-US');
+  }
 }

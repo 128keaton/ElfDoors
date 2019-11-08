@@ -1,9 +1,18 @@
-<countdown #countdownComponent [config]="countdownConfig" (event)="updateDoors($event)"></countdown>
-<a class="update-button" (click)="forceUpdateDoors()">Update Now</a>
 <div class="doors">
-  <div *ngFor="let door of (doors | async)" class="door-status door-status-{{door.status | lowercase}}" @fadeIn>
-    <h1 class="door-name">{{door.name}}</h1>
-    <h2 class="door-status">{{door.isClosed ? 'Closed' : 'Open'}}</h2>
-    <h3 class="door-status-raw">{{door.status}}</h3>
+  <div class="door-status-wrapper" *ngFor="let doorIdentifier of (doorIdentifiers | async)" @fadeIn>
+    <div *ngIf="getDoorSubscriber(doorIdentifier) | async let door; else doorSkeleton"
+         class="door-status door-status-{{door['status'] | lowercase }}">
+      <h1 class="door-name">{{door['name']}}</h1>
+      <h2 class="door-status">{{door['isClosed'] ? 'Closed' : 'Open'}}</h2>
+      <h3 class="door-status-raw">{{door['status']}}</h3>
+      <span class="door-hash">{{door['updateHash']}}</span>
+    </div>
+    <ng-template #doorSkeleton>
+      <div class="door-status door-status-skeleton">
+        <h1 class="door-name">Loading</h1>
+        <h2 class="door-status">...</h2>
+        <h3 class="door-status-raw">...</h3>
+      </div>
+    </ng-template>
   </div>
 </div>

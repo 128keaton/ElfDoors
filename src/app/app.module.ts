@@ -6,7 +6,6 @@ import {IntelliAccessModule} from './services/intelli-access/intelli-access.modu
 import {DoorsComponent} from './views/doors/doors.component';
 import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
-import {CountdownModule} from 'ngx-countdown';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -19,7 +18,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     RouterModule,
     AppRoutingModule,
-    CountdownModule,
     IntelliAccessModule.forRoot({
       endpointURL: '45.32.217.203',
       username: 'admin',
