@@ -1,11 +1,5 @@
 FROM node:12.2.0
 
-# Set enviroment variables
-ENV INTELLI_USERNAME ${INTELLI_USERNAME}
-ENV INTELLI_PASSWORD ${INTELLI_PASSWORD}
-ENV INTELLI_ENDPOINT ${INTELLI_ENDPOINT}
-ENV PORT ${PORT}
-
 # Set work directory to somewhere safe
 WORKDIR /usr/src/elfdoors
 

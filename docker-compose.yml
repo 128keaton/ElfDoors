@@ -6,4 +6,4 @@ services:
       dockerfile: Dockerfile
     image: kretin2/elfdoors:latest
     ports:
-      - ${PORT}:3000
+      - ${PORT}:${PORT}

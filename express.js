@@ -23,7 +23,7 @@ signale.config({
 });
 
 // Get environment variables
-const port = process.env.PORT || '3000';
+const port = process.env.PORT || '80';
 const intelliURL = process.env.INTELLI_ENDPOINT || 'http://localhost';
 const intelliUsername = process.env.INTELLI_USERNAME || 'admin';
 const intelliPassword = process.env.INTELLI_PASSWORD || 'admin';
