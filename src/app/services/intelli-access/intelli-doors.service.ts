@@ -15,7 +15,12 @@ export class IntelliDoorsService {
   }
 
   public getDoorsStatus(): Observable<IntelliDoorStatusResponse> {
-    const url = `http://localhost:${this.config.port}/api/infinias/ia/doors/status`;
+    let url = `http://localhost:${this.config.port}/api/infinias/ia/doors/status`;
+
+    if (this.config.port === 80) {
+      url = '/api/infinias/ia/doors/status';
+    }
+
     return this.httpClient.get(url).pipe(
       map(res => {
         return IntelliDoorStatusResponse.fromJSON(res);
