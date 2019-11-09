@@ -50,7 +50,13 @@ app.use('/api', function(req, res) {
     .addQuery('password', intelliPassword)
     .get;
 
-  req.pipe(request(url)).pipe(res);
+  let apiRequest = request(url);
+  apiRequest.on("response", function(response) {
+    apiRequest.pipe(res);
+    apiRequest.resume();
+  }).on("error", function(err) {
+    signale.error(err);
+  });
 });
 
 // Use express to host the Angular build output
