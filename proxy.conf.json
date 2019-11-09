@@ -1,9 +1,0 @@
-{
-  "/proxy/*": {
-    "target": "http://45.32.217.203:18779",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug",
-    "pathRewrite": {"^/proxy" : ""}
-  }
-}

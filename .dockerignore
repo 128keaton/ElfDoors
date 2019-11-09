@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+elfdoors.iml
+.idea
+e2e
+dist
+README.md

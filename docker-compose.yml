@@ -1,0 +1,9 @@
+version: '3'
+services:
+  elfdoors:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: kretin2/elfdoors:latest
+    ports:
+      - ${APP_PORT}:3000

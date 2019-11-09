@@ -1,8 +1,8 @@
-import {Component, EventEmitter, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IntelliDoorsService} from '../../services/intelli-access/intelli-doors.service';
-import {BehaviorSubject, interval, Observable, ReplaySubject, timer} from 'rxjs';
+import {BehaviorSubject, Observable, timer} from 'rxjs';
 import {IntelliDoor} from '../../services/intelli-access/models/intelli-door.model';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {untilDestroyed} from 'ngx-take-until-destroy';
 import {animate, style, transition, trigger} from '@angular/animations';
 

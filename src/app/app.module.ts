@@ -18,11 +18,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     RouterModule,
     AppRoutingModule,
-    IntelliAccessModule.forRoot({
-      endpointURL: '45.32.217.203',
-      username: 'admin',
-      password: 'admin'
-    }),
+    IntelliAccessModule
   ],
   providers: [],
   bootstrap: [AppComponent]
