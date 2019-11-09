@@ -15,10 +15,10 @@ export class IntelliDoorsService {
   }
 
   public getDoorsStatus(): Observable<IntelliDoorStatusResponse> {
-    let url = `http://localhost:${this.config.port}/api/infinias/ia/doors/status`;
+    let url = '/api/infinias/ia/doors/status';
 
-    if (this.config.port === 80) {
-      url = '/api/infinias/ia/doors/status';
+    if (this.config.host !== null) {
+      url = `http://localhost:${this.config.port}/api/infinias/ia/doors/status`;
     }
 
     return this.httpClient.get(url).pipe(
