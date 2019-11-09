@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 });
 
 // Pipe API requests to the intelli-m server
-app.use('/api*', function(req, res) {
+app.use('/api', function(req, res) {
   const requestEndpoint = req.url.replace('/api', '');
 
   const url = burly(intelliURL)
