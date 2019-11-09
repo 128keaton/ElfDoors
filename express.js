@@ -33,7 +33,7 @@ const app = express();
 const appPort = process.env.APP_PORT;
 
 // Configure express app
-app.set('port', 3000);
+app.set('port', port);
 
 // Add CORS header to any request
 app.use((req, res, next) => {
