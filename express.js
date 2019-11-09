@@ -51,7 +51,7 @@ app.use('/api', function(req, res) {
     .get;
 
   let apiRequest = request(url);
-  apiRequest.on("response", function(response) {
+  apiRequest.on("response", function() {
     apiRequest.pipe(res);
     apiRequest.resume();
   }).on("error", function(err) {
