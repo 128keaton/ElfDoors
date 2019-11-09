@@ -35,7 +35,7 @@ export class DoorsComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.doorIdentifiers.subscribe(doors => {
+    this.doorIdentifiers.subscribe(() => {
       timer(0, 2000).pipe(
         untilDestroyed(this),
         switchMap(() => this.doorsService.getDoorsStatus().pipe(
