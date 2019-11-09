@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
   config:
-    APP_PORT: 80
+    PORT: 80

@@ -4,7 +4,7 @@ FROM node:12.2.0
 ENV INTELLI_USERNAME ${INTELLI_USERNAME}
 ENV INTELLI_PASSWORD ${INTELLI_PASSWORD}
 ENV INTELLI_ENDPOINT ${INTELLI_ENDPOINT}
-ENV APP_PORT ${APP_PORT}
+ENV PORT ${PORT}
 
 # Set work directory to somewhere safe
 WORKDIR /usr/src/elfdoors
@@ -22,7 +22,7 @@ COPY . .
 RUN node_modules/@angular/cli/bin/ng build
 
 # Expose the app port
-EXPOSE 3000
+EXPOSE ${PORT}
 
 # Start the server
 CMD [ "node", "express.js" ]

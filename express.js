@@ -30,7 +30,6 @@ const intelliPassword = process.env.INTELLI_PASSWORD || 'admin';
 
 // Create root objects
 const app = express();
-const appPort = process.env.APP_PORT;
 
 // Configure express app
 app.set('port', port);
@@ -67,7 +66,6 @@ http.createServer(app).listen(port, () => figlet(packageInfo.name, function(err,
     console.log(data);
     console.log('===========================================');
     signale.info(`Version: ${packageInfo.version}`);
-    signale.success(`ExpressJS backend available at http://localhost:${port}`);
-    signale.success(`Angular frontend available at http://localhost:${appPort}`);
+    signale.success(`Available at http://localhost:${port}`);
   }
 }));
