@@ -59,5 +59,26 @@
    ```
 
 ### Heroku
-   *Work in progress*
+1. Setup
 
+   Set your Heroku configuration like you would your environment variables.
+   ```bash
+   $ heroku config:set INTELLI_ENDPOINT=http://69.69.69.69:420
+   $ heroku config:set INTELLI_USERNAME=admin
+   $ heroku config:set INTELLI_PASSWORD=admin
+   ```
+
+2. Create
+
+   Create a Heroku app from the CLI.
+   ```bash
+   $ heroku apps:create elfdoors-instance-001
+   $ heroku stack:set container
+   ```
+   
+3. Deploy
+
+   Deploy the Heroku app
+   ```bash
+   $ git push heroku master
+   ```
