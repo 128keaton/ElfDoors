@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {IntelliDoorsService} from '../../services/intelli-access/intelli-doors.service';
 import {LastUpdatedService} from '../../services/last-updated.service';
@@ -6,6 +6,7 @@ import {PageTitleService} from '../../services/page-title.service';
 import {Observable, timer} from 'rxjs';
 import {IntelliEvent} from '../../services/intelli-access/models/intelli-event.model';
 import {map, switchMap, tap} from 'rxjs/operators';
+import {untilDestroyed} from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-events',
@@ -20,7 +21,7 @@ import {map, switchMap, tap} from 'rxjs/operators';
     ]),
   ],
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
   events: Observable<IntelliEvent[]>;
 
   constructor(private doorsService: IntelliDoorsService,
@@ -36,6 +37,7 @@ export class EventsComponent implements OnInit {
 
   ngOnInit() {
     this.events = timer(0, 2000).pipe(
+      untilDestroyed(this),
       switchMap(() => this.doorsService.getEvents().pipe(
         map(eventsResponse => eventsResponse.events)
       )),
@@ -43,4 +45,6 @@ export class EventsComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(): void {
+  }
 }
