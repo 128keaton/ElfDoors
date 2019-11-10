@@ -2,7 +2,7 @@
 **Copyright 2019 Keaton Burleson**
 
 ## Usage
-### NodeJS
+### node
 1. Setup
 
    Create a `.env` file in the project root. Use the template below to create your environment.
