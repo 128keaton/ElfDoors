@@ -22,18 +22,11 @@
 }
 
 .doors {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
   width: 100%;
 
+
   div.door-status-wrapper {
-    text-align: center;
-    flex: 1;
     margin: 1em;
-    min-width: 350px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 
     h1.door-name {
@@ -83,18 +76,18 @@
   }
 
   div.door-status-forcedopen {
-    background-color: #FF3A28;
+   // background-color: #FF3A28;
   }
 
   div.door-status-closednormal {
-    background-color: #1BD365;
+   // background-color: #1BD365;
   }
 
   div.door-status-opennormal {
-    background-color: #3366FF;
+  //  background-color: #3366FF;
   }
 
   div.door-status-heldopen {
-    background-color: #FFF026;
+   // background-color: #FFF026;
   }
 }

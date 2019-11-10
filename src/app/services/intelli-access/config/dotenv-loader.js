@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const env = {
   port: process.env.PORT || '80',
-  host: null
+  host: process.env.HOST || null,
 };
 
 module.exports = () => {

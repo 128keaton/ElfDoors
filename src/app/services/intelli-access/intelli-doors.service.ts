@@ -18,7 +18,7 @@ export class IntelliDoorsService {
     let url = '/api/infinias/ia/doors/status';
 
     if (this.config.host !== null) {
-      url = `http://localhost:${this.config.port}/api/infinias/ia/doors/status`;
+      url = `http://${this.config.host}:${this.config.port}/api/infinias/ia/doors/status`;
     }
 
     return this.httpClient.get(url).pipe(
