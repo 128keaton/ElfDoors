@@ -1,0 +1,13 @@
+<div class="events">
+  <div class="event-wrapper" @fadeIn>
+    <div class="event" *ngFor="let event of (events | async)">
+      <div class="status-icon">
+        <i class="eva eva-activity"></i>
+      </div>
+      <div class="event-metadata">
+        <h1 class="event-name">{{event.doorName}}: {{event.triggeredReason}}</h1>
+        <h2 class="event-description">{{event.triggeredAt | eventDate}}</h2>
+      </div>
+    </div>
+  </div>
+</div>

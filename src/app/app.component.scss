@@ -2,20 +2,118 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
 
 .content {
-  background-color: #463AE0;
+  background-color: #453AE0;
   flex: 1;
-  border-radius: 45px;
-  padding: 2em;
-  width: 400px;
-  margin: 2em auto;
+  width: 35%;
+  min-width: 450px;
+  margin: 0.5em auto 4em;
+  box-shadow: 0 4px 10px 1px rgba(0, 0, 0, 0.34);
+  overflow: scroll;
+  z-index: 10;
+  &:before {
+    content: '';
+    width: 35%;
+    min-width: 450px;
+    background-color: #453AE0;
+    border-radius: 25px 25px 0 0;
+    box-shadow: 0 -5px 10px -3px rgba(0, 0, 0, 0.34), 0 12px 10px -5px rgb(69, 58, 224);
+    height: 25px;
+    position: absolute;
+    top: 10em;
+    z-index: 10;
+  }
+  &:after {
+    content: '';
+    width: 35%;
+    min-width: 450px;
+    background-color: #453AE0;
+    border-radius: 0 0 25px 25px;
+    height: 25px;
+    position: absolute;
+    bottom: 2.5em;
+    z-index: 10;
+    box-shadow: -2px 7px 10px -3px rgba(0, 0, 0, 0.34), 0 -12px 10px -5px rgb(69, 58, 224);
+  }
+
+  @media (max-width: 450px) {
+    width: 100%;
+    min-width: unset;
+    margin: 0.5em auto 0;
+    &:before {
+      top: 8em;
+      width: 100%!important;
+      min-width: unset;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
 }
 
-h1.title {
-  text-align: center;
-  margin: 0.4rem;
-  font-size: 3.4em;
+.navigation {
+  width: 35%;
+  min-width: 450px;
+  border-radius: 45px 45px 0 0;
+  background-color: white;
+  padding: 0 0 3.5em;
+  margin: 2em auto -2em;
+  box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.34);
+  height: 120px;
+
+  .title {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+    margin-top: 1em;
+    text-align: left;
+    background-color: #d4d4d4;
+    color: transparent;
+    text-transform: lowercase;
+    text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+
+    span {
+      background: white;
+      text-shadow: none;
+      color: rgba(177, 168, 168, 0.28);
+      font-weight: normal;
+    }
+  }
+
+  @media (max-width: 450px) {
+    width: 100%;
+    border-radius: 0;
+    padding: 0 0 1.5em;
+    margin: 0 auto;
+    min-width: unset;
+    .title {
+      font-size: 1.8em;
+    }
+  }
 }
 
+.links {
+  display: flex;
+  align-items: stretch;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+
+  .link {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 2em;
+    color: #46408B !important;
+    text-decoration: none;
+    padding-bottom: 0.2em;
+
+    &.selected {
+      border-bottom: 2px solid rgba(70, 64, 139, 0.61);
+    }
+  }
+}

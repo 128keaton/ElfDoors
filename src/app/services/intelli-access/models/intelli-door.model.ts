@@ -64,22 +64,4 @@ export class IntelliDoor extends Serializable {
     optional: true
   })
   outZoneID?: number;
-
-  get isOpen(): boolean {
-    return this.status === IntelliDoorStatus.open ||
-      this.status === IntelliDoorStatus.forcedOpen ||
-      this.status === IntelliDoorStatus.heldOpen;
-  }
-
-  get isClosed(): boolean {
-    return this.status === IntelliDoorStatus.close;
-  }
-
-  updateHash: string;
-
-  constructor() {
-    super();
-
-    this.updateHash = (new Date()).toLocaleTimeString('en-US');
-  }
 }

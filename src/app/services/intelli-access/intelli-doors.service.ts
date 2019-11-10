@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {IntelliDoorStatusResponse} from './models/intelli-door-status.response';
 import {map} from 'rxjs/operators';
 import {dotenv} from './config/dotenv';
+import {IntelliEventsResponse} from './models/intelli-events.response';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,26 @@ export class IntelliDoorsService {
     let url = '/api/infinias/ia/doors/status';
 
     if (this.config.host !== null) {
-      url = `http://${this.config.host}:${this.config.port}/api/infinias/ia/doors/status`;
+      url = `http://${this.config.host}:${this.config.port}${url}`;
     }
 
     return this.httpClient.get(url).pipe(
       map(res => {
         return IntelliDoorStatusResponse.fromJSON(res);
+      })
+    );
+  }
+
+  public getEvents(): Observable<IntelliEventsResponse> {
+    let url = '/api/infinias/ia/events/summary';
+
+    if (this.config.host !== null) {
+      url = `http://${this.config.host}:${this.config.port}${url}`;
+    }
+
+    return this.httpClient.get(url).pipe(
+      map(res => {
+        return IntelliEventsResponse.fromJSON(res);
       })
     );
   }

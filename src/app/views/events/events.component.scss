@@ -3,28 +3,22 @@
   display: block;
 }
 
-
-.doors {
+.events {
   width: 100%;
   overflow-y: scroll;
+  z-index: 55;
 
-  div.door-status-wrapper {
-    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  .event-wrapper {
     border-bottom: 2px solid #ffffff0a;
+
     &:last-child {
       border-bottom: none;
     }
 
-    div.door-status {
+    .event {
       padding: 2em 1em;
       display: flex;
       height: 60px;
-
-      &.door-status-skeleton {
-        * {
-          color: transparent;
-        }
-      }
     }
 
     .status-icon {
@@ -39,15 +33,10 @@
         border: 2px solid white;
         border-radius: 100%;
         font-size: 2em;
-
-        &.door-open-false {
-          background-color: white;
-          color: #453AE0;
-        }
       }
     }
 
-    .door-metadata {
+    .event-metadata {
       padding-top: 0.2em;
       padding-bottom: 0.4em;
       display: flex;
@@ -56,35 +45,21 @@
       flex: 1;
     }
 
-    h1.door-name {
+    h1.event-name {
       margin: 0;
       color: white;
       font-size: 1.2em;
-      transition: all 1.5s cubic-bezier(.25, .8, .25, 1);
     }
 
-    h2.door-status {
+    h2.event-description {
       margin: 0;
       padding: 0;
       color: white;
       font-size: 1em;
       font-weight: normal;
-      transition: all 1.5s cubic-bezier(.25, .8, .25, 1);
-
-      span.door-sub-status {
-        color: #ffeaea4f;
-
-        &.forced {
-          color: #ff6a5e;
-        }
-
-        &.held {
-          color: #FFF026;
-        }
-      }
     }
 
-    .door-alerts {
+    .event-alerts {
       margin-right: 1em;
       padding-top: 0.4em;
       padding-bottom: 0.4em;
@@ -94,19 +69,6 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: all 1.5s cubic-bezier(.25, .8, .25, 1);
-
-      .door-alert-status-forced {
-        color: #ff6a5e;
-      }
-
-      .door-alert-status-held {
-        color: #FFF026;
-      }
-
-      i {
-        font-size: 2em;
-      }
     }
   }
 }
