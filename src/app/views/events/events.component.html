@@ -6,7 +6,11 @@
       </div>
       <div class="event-metadata">
         <h1 class="event-name">{{event.doorName}}: {{event.triggeredReason}}</h1>
-        <h2 class="event-description">{{event.triggeredAt | eventDate}}</h2>
+        <h2 class="event-description">{{event.triggeredAt | eventDate}}
+        <ng-container *ngIf="event.triggeredByName | eventUser">
+          by {{event.triggeredByName | eventUser}}
+        </ng-container>
+        </h2>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@ import {DoorAlertStatusPipe} from './pipes/door-alert-status.pipe';
 import {DoorStatusPipe} from './pipes/door-status.pipe';
 import {EventsComponent} from './views/events/events.component';
 import {EventDatePipe} from './pipes/event-date.pipe';
+import { EventUserPipe } from './pipes/event-user.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {EventDatePipe} from './pipes/event-date.pipe';
     DoorAlertStatusPipe,
     DoorStatusPipe,
     EventsComponent,
-    EventDatePipe
+    EventDatePipe,
+    EventUserPipe
   ],
   imports: [
     BrowserModule,
