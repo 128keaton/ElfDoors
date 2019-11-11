@@ -24,7 +24,10 @@
               "src/assets",
               "src/manifest.json",
               "src/favicon-16x16.png",
-              "src/favicon-32x32.png"
+              "src/favicon-32x32.png",
+              "src/apple-touch-icon.png",
+              "src/android-chrome-192x192.png",
+              "src/android-chrome-512x512.png"
             ],
             "styles": [
               "src/styles.css",
@@ -94,7 +97,11 @@
               "src/manifest.json",
               "src/favicon-16x16.png",
               "src/favicon-32x32.png",
-              "src/assets"
+              "src/assets",
+              "src/favicon-32x32.png",
+              "src/apple-touch-icon.png",
+              "src/android-chrome-192x192.png",
+              "src/android-chrome-512x512.png"
             ],
             "styles": [
               "src/styles.css",
