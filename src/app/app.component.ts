@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit} from '@angular/core';
 import {LastUpdatedService} from './services/last-updated.service';
-import {BehaviorSubject, timer} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {PageTitleService} from './services/page-title.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ToastrService} from 'ngx-toastr';
 import {IntelliEventsService} from './services/intelli-access/services';
-import {distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {delay, distinctUntilChanged, repeatWhen} from 'rxjs/operators';
 import {dotenv} from './services/intelli-access/config/dotenv';
 import {untilDestroyed} from 'ngx-take-until-destroy';
 
@@ -58,17 +58,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.lastUpdatedService.now();
-    timer(0, 2000).pipe(
+    this.eventsService.getEvents().pipe(
       untilDestroyed(this),
-      switchMap(() => this.eventsService.getEvents()),
+      repeatWhen(completed => completed.pipe(delay(3500))),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
     ).subscribe(eventsResponse => {
-      const mostRecentEvent = eventsResponse.events[eventsResponse.events.length - 1];
+      const event = eventsResponse.events[eventsResponse.events.length - 1];
+      if (this.fetchedEvents === true && event) {
+        const message = (event.triggeredReason ? event.triggeredReason.displayName : event.rawTriggeredReason);
 
-      if (this.fetchedEvents === true && mostRecentEvent) {
-        const message = (mostRecentEvent.triggeredReason ? mostRecentEvent.triggeredReason.displayName : mostRecentEvent.rawTriggeredReason);
+        if (event.triggeredReason.displayName.includes('Offline')) {
+          this.toastrService.error(message, event.doorName);
+        } else {
+          this.toastrService.info(message, event.doorName);
+        }
 
-        this.toastrService.show(message, mostRecentEvent.doorName);
       } else {
         this.fetchedEvents = true;
       }

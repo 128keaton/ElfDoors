@@ -3,7 +3,7 @@ import {Observable, timer} from 'rxjs';
 import {IntelliPerson} from '../../services/intelli-access/models/people/intelli-person.model';
 import {LastUpdatedService} from '../../services/last-updated.service';
 import {PageTitleService} from '../../services/page-title.service';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {IntelliPeopleService} from '../../services/intelli-access/services';
 import {untilDestroyed} from 'ngx-take-until-destroy';
 import {animate, style, transition, trigger} from '@angular/animations';

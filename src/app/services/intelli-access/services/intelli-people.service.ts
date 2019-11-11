@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {distinctUntilChanged, map} from 'rxjs/operators';
 import {dotenv} from '../config/dotenv';
 import {IntelliPeopleResponse} from '../models/people/intelli-people.response';
 
@@ -26,7 +26,8 @@ export class IntelliPeopleService {
         if (res.success && res.data) {
           return IntelliPeopleResponse.fromJSON(res.data);
         }
-      })
+      }),
+      distinctUntilChanged((x, y) => JSON.stringify(x.people) !== JSON.stringify(y.people))
     );
   }
 

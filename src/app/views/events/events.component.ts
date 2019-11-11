@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {animate, animateChild, query, stagger, state, style, transition, trigger} from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import {LastUpdatedService} from '../../services/last-updated.service';
 import {PageTitleService} from '../../services/page-title.service';
-import {Observable, timer} from 'rxjs';
+import {Observable} from 'rxjs';
 import {IntelliEvent} from '../../services/intelli-access/models/events/intelli-event.model';
-import {distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
+import {delay, map, repeatWhen, tap} from 'rxjs/operators';
 import {untilDestroyed} from 'ngx-take-until-destroy';
 import {IntelliEventsService} from '../../services/intelli-access/services';
 
@@ -14,8 +14,8 @@ import {IntelliEventsService} from '../../services/intelli-access/services';
   styleUrls: ['./events.component.scss'],
   animations: [
     trigger('fadeIn', [
-      state('true' , style({ opacity: 1})),
-      state('false', style({ opacity: 0 })),
+      state('true', style({opacity: 1})),
+      state('false', style({opacity: 0})),
       transition('1 => 0', animate('.5s ease-out')),
       transition('0 => 1', animate('.5s ease-out'))
     ]),
@@ -37,12 +37,10 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.events = timer(0, 2000).pipe(
+    this.events = this.eventsService.getEvents().pipe(
       untilDestroyed(this),
-      distinctUntilChanged(),
-      switchMap(() => this.eventsService.getEvents().pipe(
-        map(eventsResponse => eventsResponse.events)
-      )),
+      repeatWhen(complete => complete.pipe(delay(2000))),
+      map(eventsResponse => eventsResponse.events),
       tap(() => {
         this.hasAnimated = true;
         this.lastUpdatedService.now();

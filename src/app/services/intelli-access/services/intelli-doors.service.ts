@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {dotenv} from '../config/dotenv';
 import {IntelliDoorStatusResponse} from '../models/doors/intelli-door-status.response';
 
@@ -24,7 +24,9 @@ export class IntelliDoorsService {
     return this.httpClient.get(url).pipe(
       map(res => {
         return IntelliDoorStatusResponse.fromJSON(res);
-      })
+      }),
+      distinctUntilChanged((x, y) => JSON.stringify(x.doors) !== JSON.stringify(y.doors)),
+      tap(res => console.log('Changed', res))
     );
   }
 }

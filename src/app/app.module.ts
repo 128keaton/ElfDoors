@@ -26,7 +26,7 @@ import {ToastrModule} from 'ngx-toastr';
     EventDatePipe,
     EventUserPipe,
     PeopleComponent,
-    EventIconPipe
+    EventIconPipe,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +34,10 @@ import {ToastrModule} from 'ngx-toastr';
     RouterModule,
     AppRoutingModule,
     IntelliAccessModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      preventDuplicates: true,
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

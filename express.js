@@ -51,6 +51,10 @@ app.use('/api', function(req, res) {
     .get;
 
   let apiRequest = request(url);
+  if (process.env.LOG_REQUESTS) {
+    signale.debug(`Requesting URL ${url}`);
+  }
+
   apiRequest.on("response", function() {
     apiRequest.pipe(res);
     apiRequest.resume();

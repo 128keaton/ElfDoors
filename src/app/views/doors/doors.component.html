@@ -1,6 +1,6 @@
-<div class="doors">
-  <div class="door-status-wrapper" *ngFor="let doorIdentifier of (doorIdentifiers | async)">
-    <div *ngIf="getDoorSubscriber(doorIdentifier) | async let door" class="door-status" @fadeIn>
+<div class="doors" [@fadeIn]="hasAnimated">
+  <div class="door-status-wrapper" *ngFor="let door of (doors | async)">
+    <div class="door-status">
       <div class="status-icon">
         <i class="eva {{getIcon(door)}} door-open-{{door['status'] | doorAlertStatus: false: true}}"></i>
       </div>
