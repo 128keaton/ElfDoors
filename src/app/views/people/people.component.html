@@ -6,8 +6,7 @@
       </div>
       <div class="person-metadata">
         <h1 class="person-name">{{person.fullName | titlecase}}</h1>
-        <h2 class="person-card-number">Card Number - {{person.cardNumber}}</h2>
-        <h2 class="person-status">Card Status - {{person.cardStatus}}</h2>
+        <h2 class="person-card-number">{{person.cardNumber}} - <span class="card-status">{{person.cardStatus}}</span></h2>
       </div>
     </div>
   </div>
