@@ -6,6 +6,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {ToastrService} from 'ngx-toastr';
 import {IntelliEventsService} from './services/intelli-access/services';
 import {distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {dotenv} from './services/intelli-access/config/dotenv';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +21,9 @@ import {distinctUntilChanged, switchMap} from 'rxjs/operators';
   ],
   template: `
       <div class="navigation">
-          <h1 class="title">ElfDoors
-              <span id="last_updated" *ngIf="hasLastUpdated | async" @fadeIn> - {{lastUpdatedText | async}}</span>
+          <h1 class="title">
+              {{appTitle}}
+              <span id="last_updated" *ngIf="(hasLastUpdated | async)" @fadeIn> - {{lastUpdatedText | async}}</span>
           </h1>
           <div class="links">
               <a class="link" [class.selected]="(currentPageTitle | async) === 'doors'" routerLink="/">Doors</a>
@@ -42,6 +44,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   currentPageTitle = new EventEmitter(true);
   hasLastUpdated = new EventEmitter(true);
   fetchedEvents = false;
+  appTitle = dotenv.title;
 
   constructor(protected lastUpdatedService: LastUpdatedService,
               protected toastrService: ToastrService,

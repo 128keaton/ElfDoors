@@ -11,6 +11,9 @@
    INTELLI_ENDPOINT='http://69.69.69.69:420'
    INTELLI_USERNAME='admin'
    INTELLI_PASSWORD='admin'
+   
+   # Defaults to 'ElfDoors'
+   TITLE='Client1'
 
    # Port to run the server on
    PORT=3000
@@ -40,6 +43,9 @@
    INTELLI_USERNAME='admin'
    INTELLI_PASSWORD='admin'
 
+   # Defaults to 'ElfDoors'
+   TITLE='Client1'
+   
    # Port to run the server on
    PORT=3000
    ```
@@ -66,6 +72,7 @@
    $ heroku config:set INTELLI_ENDPOINT=http://69.69.69.69:420
    $ heroku config:set INTELLI_USERNAME=admin
    $ heroku config:set INTELLI_PASSWORD=admin
+   $ heroku config:set TITLE=ElfDoors
    ```
 
 2. Create
