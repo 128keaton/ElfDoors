@@ -34,4 +34,18 @@ export class IntelliEvent extends Serializable {
   triggeredAt: string;
 
   triggeredReason: IntelliEventReason;
+
+  get isError(): boolean {
+    if (this.triggeredReason) {
+      return [44, 45, 76].includes(this.triggeredReason.id);
+    }
+    return false;
+  }
+
+  get isWarning(): boolean {
+    if (this.triggeredReason) {
+      return this.triggeredReason.id === 68;
+    }
+    return false;
+  }
 }

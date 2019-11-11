@@ -64,11 +64,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
     ).subscribe(eventsResponse => {
       const event = eventsResponse.events[eventsResponse.events.length - 1];
-      if (this.fetchedEvents === true && event) {
+      if (this.fetchedEvents === true && event && event.doorName) {
         const message = (event.triggeredReason ? event.triggeredReason.displayName : event.rawTriggeredReason);
 
-        if (event.triggeredReason.displayName.includes('Offline')) {
+        if (event.isError) {
           this.toastrService.error(message, event.doorName);
+        } else if (event.isWarning) {
+          this.toastrService.warning(message, event.doorName);
         } else {
           this.toastrService.info(message, event.doorName);
         }
