@@ -103,4 +103,3 @@
    Start Google Chrome in kiosk mode:
    
     $ /usr/bin/google-chrome --kiosk  --app='https://your-instance.elfdoors'
-    
