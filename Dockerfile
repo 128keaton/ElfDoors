@@ -12,6 +12,9 @@ RUN npm ci
 # Bundle app source
 COPY . .
 
+# Expose the TITLE var to Angular
+ENV TITLE ${TITLE}
+
 # Build the Angular frontend
 RUN node_modules/@angular/cli/bin/ng build
 
