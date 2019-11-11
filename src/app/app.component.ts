@@ -1,8 +1,11 @@
 import {AfterViewInit, Component, EventEmitter, OnInit} from '@angular/core';
 import {LastUpdatedService} from './services/last-updated.service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, timer} from 'rxjs';
 import {PageTitleService} from './services/page-title.service';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {ToastrService} from 'ngx-toastr';
+import {IntelliEventsService} from './services/intelli-access/services';
+import {distinctUntilChanged, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +26,13 @@ import {animate, style, transition, trigger} from '@angular/animations';
           <div class="links">
               <a class="link" [class.selected]="(currentPageTitle | async) === 'doors'" routerLink="/">Doors</a>
               <a class="link" [class.selected]="(currentPageTitle | async) === 'events'" routerLink="/events">Events</a>
+              <a class="link" [class.selected]="(currentPageTitle | async) === 'people'" routerLink="/people">People</a>
           </div>
       </div>
       <div class="content">
-          <router-outlet></router-outlet>
+          <div class="scroll-wrapper">
+              <router-outlet></router-outlet>
+          </div>
       </div>
   `
 })
@@ -35,8 +41,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   lastUpdatedText = new EventEmitter(true);
   currentPageTitle = new EventEmitter(true);
   hasLastUpdated = new EventEmitter(true);
+  fetchedEvents = false;
 
-  constructor(protected lastUpdatedService: LastUpdatedService, protected pageTitleService: PageTitleService) {
+  constructor(protected lastUpdatedService: LastUpdatedService,
+              protected toastrService: ToastrService,
+              protected eventsService: IntelliEventsService,
+              protected pageTitleService: PageTitleService) {
     this.lastUpdated = this.lastUpdatedService.lastUpdated;
     this.lastUpdated.subscribe(l => this.lastUpdatedText.emit(l));
     this.pageTitleService.titleChanged.subscribe(pageTitle => this.currentPageTitle.emit(pageTitle));
@@ -44,6 +54,20 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.lastUpdatedService.now();
+    timer(0, 2000).pipe(
+      switchMap(() => this.eventsService.getEvents()),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+    ).subscribe(eventsResponse => {
+      const mostRecentEvent = eventsResponse.events[eventsResponse.events.length - 1];
+
+      if (this.fetchedEvents === true && mostRecentEvent) {
+        const message = (mostRecentEvent.triggeredReason ? mostRecentEvent.triggeredReason.displayName : mostRecentEvent.rawTriggeredReason);
+
+        this.toastrService.show(message, mostRecentEvent.doorName);
+      } else {
+        this.fetchedEvents = true;
+      }
+    });
   }
 
   ngAfterViewInit(): void {

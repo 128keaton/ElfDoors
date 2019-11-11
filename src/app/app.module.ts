@@ -11,7 +11,10 @@ import {DoorAlertStatusPipe} from './pipes/door-alert-status.pipe';
 import {DoorStatusPipe} from './pipes/door-status.pipe';
 import {EventsComponent} from './views/events/events.component';
 import {EventDatePipe} from './pipes/event-date.pipe';
-import { EventUserPipe } from './pipes/event-user.pipe';
+import {EventUserPipe} from './pipes/event-user.pipe';
+import {PeopleComponent} from './views/people/people.component';
+import {EventIconPipe} from './pipes/event-icon.pipe';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -21,14 +24,17 @@ import { EventUserPipe } from './pipes/event-user.pipe';
     DoorStatusPipe,
     EventsComponent,
     EventDatePipe,
-    EventUserPipe
+    EventUserPipe,
+    PeopleComponent,
+    EventIconPipe
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule,
     AppRoutingModule,
-    IntelliAccessModule
+    IntelliAccessModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

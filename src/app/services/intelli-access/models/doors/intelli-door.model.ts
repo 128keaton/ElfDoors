@@ -1,7 +1,7 @@
 import {Serializable, Serialize, SerializeProperty} from 'ts-serializer';
-import {IntelliDoorControllerStatus} from './status/intelli-door-controller-status.enum';
-import {IntelliDoorLockStatus} from './status/intelli-door-lock-status.enum';
-import {IntelliDoorStatus} from './status/intelli-door-status.enum';
+import {IntelliDoorControllerStatus} from '../status/intelli-door-controller-status.enum';
+import {IntelliDoorLockStatus} from '../status/intelli-door-lock-status.enum';
+import {IntelliDoorStatus} from '../status/intelli-door-status.enum';
 
 @Serialize({})
 export class IntelliDoor extends Serializable {

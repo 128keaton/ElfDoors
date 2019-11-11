@@ -5,53 +5,43 @@
   position: relative;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+  width: 5px;
+  border-radius: 25px 0 0 25px;
+}
+
 .content {
   background-color: #453AE0;
   flex: 1;
   width: 35%;
   min-width: 450px;
   margin: 0.5em auto 4em;
+  border-radius: 45px;
   box-shadow: 0 4px 10px 1px rgba(0, 0, 0, 0.34);
-  overflow: scroll;
   z-index: 10;
-  &:before {
-    content: '';
-    width: 35%;
-    min-width: 450px;
-    background-color: #453AE0;
-    border-radius: 25px 25px 0 0;
-    box-shadow: 0 -5px 10px -3px rgba(0, 0, 0, 0.34), 0 12px 10px -5px rgb(69, 58, 224);
-    height: 25px;
-    position: absolute;
-    top: 10em;
-    z-index: 10;
-  }
-  &:after {
-    content: '';
-    width: 35%;
-    min-width: 450px;
-    background-color: #453AE0;
-    border-radius: 0 0 25px 25px;
-    height: 25px;
-    position: absolute;
-    bottom: 2.5em;
-    z-index: 10;
-    box-shadow: -2px 7px 10px -3px rgba(0, 0, 0, 0.34), 0 -12px 10px -5px rgb(69, 58, 224);
+  overflow: hidden;
+
+  .scroll-wrapper {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
   }
 
   @media (max-width: 450px) {
     width: 100%;
     min-width: unset;
     margin: 0.5em auto 0;
-    &:before {
-      top: 8em;
-      width: 100%!important;
-      min-width: unset;
-    }
-
-    &:after {
-      display: none;
-    }
   }
 }
 

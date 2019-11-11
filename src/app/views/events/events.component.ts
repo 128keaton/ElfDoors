@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {IntelliDoorsService} from '../../services/intelli-access/intelli-doors.service';
+import {animate, animateChild, query, stagger, state, style, transition, trigger} from '@angular/animations';
 import {LastUpdatedService} from '../../services/last-updated.service';
 import {PageTitleService} from '../../services/page-title.service';
 import {Observable, timer} from 'rxjs';
-import {IntelliEvent} from '../../services/intelli-access/models/intelli-event.model';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {IntelliEvent} from '../../services/intelli-access/models/events/intelli-event.model';
+import {distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
 import {untilDestroyed} from 'ngx-take-until-destroy';
+import {IntelliEventsService} from '../../services/intelli-access/services';
 
 @Component({
   selector: 'app-events',
@@ -14,23 +14,24 @@ import {untilDestroyed} from 'ngx-take-until-destroy';
   styleUrls: ['./events.component.scss'],
   animations: [
     trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: '0'}),
-        animate('.5s ease-out', style({opacity: '1'})),
-      ]),
+      state('true' , style({ opacity: 1})),
+      state('false', style({ opacity: 0 })),
+      transition('1 => 0', animate('.5s ease-out')),
+      transition('0 => 1', animate('.5s ease-out'))
     ]),
   ],
 })
 export class EventsComponent implements OnInit, OnDestroy {
   events: Observable<IntelliEvent[]>;
+  hasAnimated = false;
 
-  constructor(private doorsService: IntelliDoorsService,
+  constructor(private eventsService: IntelliEventsService,
               private lastUpdatedService: LastUpdatedService,
               pageTitleService: PageTitleService) {
     pageTitleService.updatePageTitle('Events');
     lastUpdatedService.now();
 
-    this.events = this.doorsService.getEvents().pipe(
+    this.events = this.eventsService.getEvents().pipe(
       map(eventsResponse => eventsResponse.events)
     );
   }
@@ -38,10 +39,14 @@ export class EventsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.events = timer(0, 2000).pipe(
       untilDestroyed(this),
-      switchMap(() => this.doorsService.getEvents().pipe(
+      distinctUntilChanged(),
+      switchMap(() => this.eventsService.getEvents().pipe(
         map(eventsResponse => eventsResponse.events)
       )),
-      tap(() => this.lastUpdatedService.now())
+      tap(() => {
+        this.hasAnimated = true;
+        this.lastUpdatedService.now();
+      })
     );
   }
 

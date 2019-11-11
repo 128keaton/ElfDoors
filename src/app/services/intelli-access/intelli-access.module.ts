@@ -1,5 +1,5 @@
 import {NgModule, Optional, SkipSelf} from '@angular/core';
-import {IntelliDoorsService} from './intelli-doors.service';
+import {IntelliPeopleService, IntelliDoorsService, IntelliEventsService} from './services';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
@@ -8,6 +8,8 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
   ],
   providers: [
     IntelliDoorsService,
+    IntelliEventsService,
+    IntelliPeopleService
   ],
 })
 export class IntelliAccessModule {

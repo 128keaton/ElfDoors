@@ -1,4 +1,5 @@
 import {Serializable, Serialize, SerializeProperty} from 'ts-serializer';
+import {IntelliEventReason} from './intelli-event-reason.model';
 
 @Serialize({})
 export class IntelliEvent extends Serializable {
@@ -15,7 +16,7 @@ export class IntelliEvent extends Serializable {
   @SerializeProperty({
     map: 'Reason'
   })
-  triggeredReason: string;
+  rawTriggeredReason: string;
 
   @SerializeProperty({
     map: 'Door'
@@ -31,4 +32,6 @@ export class IntelliEvent extends Serializable {
     map: 'CreatedUTC',
   })
   triggeredAt: string;
+
+  triggeredReason: IntelliEventReason;
 }

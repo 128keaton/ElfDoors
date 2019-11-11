@@ -9,7 +9,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.2.12",
+    "@angular/animations": "^8.2.13",
     "@angular/common": "~8.2.12",
     "@angular/compiler": "~8.2.12",
     "@angular/core": "~8.2.12",
@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "figlet": "^1.2.4",
     "ngx-take-until-destroy": "^5.4.0",
+    "ngx-toastr": "^11.2.1",
     "request": "latest",
     "rxjs": "~6.4.0",
     "signale": "^1.4.0",

@@ -1,5 +1,6 @@
 import {Serialize, SerializeProperty, Serializable} from 'ts-serializer';
 import {IntelliEvent} from './intelli-event.model';
+import {IntelliEventReason} from './intelli-event-reason.model';
 
 @Serialize({})
 export class IntelliEventsResponse extends Serializable {
@@ -15,9 +16,16 @@ export class IntelliEventsResponse extends Serializable {
   })
   events: IntelliEvent[];
 
-  public static fromJSON(jsonData: any): IntelliEventsResponse {
+
+  public static fromJSON(jsonData: any, reasons?: IntelliEventReason[]): IntelliEventsResponse {
     const newEventsResponse = new IntelliEventsResponse();
     newEventsResponse.deserialize(jsonData);
+
+    if (reasons) {
+      newEventsResponse.events.forEach(event => {
+        event.triggeredReason = reasons.find(reason => reason.displayName === event.rawTriggeredReason);
+      });
+    }
 
     return newEventsResponse;
   }

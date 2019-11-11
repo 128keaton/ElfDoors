@@ -3,25 +3,22 @@
   display: block;
 }
 
-.events {
+.people {
   width: 100%;
   overflow-y: scroll;
   z-index: 55;
 
-  .event-wrapper {
+  .people-wrapper {
     border-bottom: 2px solid #ffffff0a;
 
     &:last-child {
       border-bottom: none;
     }
 
-    .event {
+    .person {
       padding: 2em 1em;
       display: flex;
       height: 60px;
-      & .shown * {
-        opacity: 1!important;
-      }
     }
 
     .status-icon {
@@ -32,16 +29,16 @@
 
       i {
         background-color: white;
-        color: #453AE0;
         padding: 0.3em;
+        color: #453AE0;
         border: 2px solid white;
         border-radius: 100%;
         font-size: 2em;
       }
     }
 
-    .event-metadata {
-      padding-top: 0.2em;
+    .person-metadata {
+      padding-top: 0;
       padding-bottom: 0.4em;
       display: flex;
       flex-direction: column;
@@ -49,7 +46,7 @@
       flex: 1;
     }
 
-    h1.event-name {
+    h1.person-name {
       margin: 0;
       color: white;
       font-size: 1.2em;
@@ -58,18 +55,22 @@
       }
     }
 
-    h2.event-description {
+    h2.person-status, h2.person-card-number {
       margin: 0;
       padding: 0;
       color: white;
-      font-size: 1em;
+      font-size: 0.9em;
       font-weight: normal;
       @media (max-width: 450px) {
         font-size: 0.8em;
       }
     }
 
-    .event-alerts {
+    span.card-status {
+      color: #ffeaea4f;
+    }
+
+    .person-alerts {
       margin-right: 1em;
       padding-top: 0.4em;
       padding-bottom: 0.4em;

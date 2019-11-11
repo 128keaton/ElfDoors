@@ -1,11 +1,11 @@
 <div class="events">
-  <div class="event-wrapper" @fadeIn>
+  <div class="event-wrapper" [@fadeIn]="hasAnimated">
     <div class="event" *ngFor="let event of (events | async)">
       <div class="status-icon">
-        <i class="eva eva-activity"></i>
+        <i class="eva {{event.triggeredReason | eventIcon}}"></i>
       </div>
       <div class="event-metadata">
-        <h1 class="event-name">{{event.doorName}}: {{event.triggeredReason}}</h1>
+        <h1 class="event-name">{{event.doorName}}: {{event.triggeredReason ? event.triggeredReason.displayName : event.rawTriggeredReason}}</h1>
         <h2 class="event-description">{{event.triggeredAt | eventDate}}
         <ng-container *ngIf="event.triggeredByName | eventUser">
           by {{event.triggeredByName | eventUser}}

@@ -28,7 +28,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/eva-icons/style/eva-icons.css"
+              "node_modules/eva-icons/style/eva-icons.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
@@ -97,7 +98,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/eva-icons/style/eva-icons.css"
+              "node_modules/eva-icons/style/eva-icons.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           }
