@@ -5,11 +5,18 @@
         <i class="eva {{event.triggeredReason | eventIcon}}"></i>
       </div>
       <div class="event-metadata">
-        <h1 class="event-name">{{event.doorName}}: {{event.triggeredReason ? event.triggeredReason.displayName : event.rawTriggeredReason}}</h1>
+        <h1 class="event-name">
+          <ng-container *ngIf="event.doorName">
+            <span class="door-name">{{event.doorName}}:</span>
+          </ng-container>
+          <ng-container *ngIf="!event.doorName">
+            <span class="unknown">Unknown: </span>
+          </ng-container>
+          {{event.triggeredReason ? event.triggeredReason.displayName : event.rawTriggeredReason}}</h1>
         <h2 class="event-description">{{event.triggeredAt | eventDate}}
-        <ng-container *ngIf="event.triggeredByName | eventUser">
-          by {{event.triggeredByName | eventUser}}
-        </ng-container>
+          <ng-container *ngIf="event.triggeredByName | eventUser">
+            by {{event.triggeredByName | eventUser}}
+          </ng-container>
         </h2>
       </div>
     </div>

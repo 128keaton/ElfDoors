@@ -51,10 +51,18 @@
 
     h1.event-name {
       margin: 0;
-      color: white;
+      color: lightgray;
       font-size: 1.2em;
       @media (max-width: 450px) {
         font-size: 1em;
+      }
+
+      .door-name {
+        color: white;
+      }
+
+      .unknown {
+        color: #ffeaea4f;
       }
     }
 

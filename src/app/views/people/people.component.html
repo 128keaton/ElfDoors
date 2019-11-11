@@ -1,12 +1,13 @@
 <div class="people">
-  <div class="people-wrapper" @fadeIn @blockInitialRenderAnimation>
+  <div class="people-wrapper" @fadeIn>
     <div class="person" *ngFor="let person of (people | async)">
       <div class="status-icon">
         <i class="eva eva-person"></i>
       </div>
       <div class="person-metadata">
         <h1 class="person-name">{{person.fullName | titlecase}}</h1>
-        <h2 class="person-card-number">{{person.cardNumber}} - <span class="card-status">{{person.cardStatus}}</span></h2>
+        <h2 class="person-card-number">{{person.cardNumber}}</h2>
+        <h2 class="person-card-status">{{person.cardStatus}}</h2>
       </div>
     </div>
   </div>

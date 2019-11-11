@@ -55,19 +55,20 @@
       }
     }
 
-    h2.person-status, h2.person-card-number {
+    h2.person-card-number {
       margin: 0;
       padding: 0;
       color: white;
-      font-size: 0.9em;
+      font-size: 1em;
       font-weight: normal;
-      @media (max-width: 450px) {
-        font-size: 0.8em;
-      }
     }
 
-    span.card-status {
-      color: #ffeaea4f;
+    h2.person-card-status {
+      color: rgba(255, 234, 234, 0.51);
+      margin: 0;
+      padding: 0;
+      font-size: 0.9em;
+      font-weight: normal;
     }
 
     .person-alerts {
