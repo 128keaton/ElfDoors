@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit} from '@angular/core';
 import {LastUpdatedService} from './services/last-updated.service';
 import {BehaviorSubject, timer} from 'rxjs';
 import {PageTitleService} from './services/page-title.service';
@@ -7,6 +7,7 @@ import {ToastrService} from 'ngx-toastr';
 import {IntelliEventsService} from './services/intelli-access/services';
 import {distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {dotenv} from './services/intelli-access/config/dotenv';
+import {untilDestroyed} from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +39,7 @@ import {dotenv} from './services/intelli-access/config/dotenv';
       </div>
   `
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   lastUpdated: BehaviorSubject<string>;
   lastUpdatedText = new EventEmitter(true);
   currentPageTitle = new EventEmitter(true);
@@ -58,6 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.lastUpdatedService.now();
     timer(0, 2000).pipe(
+      untilDestroyed(this),
       switchMap(() => this.eventsService.getEvents()),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
     ).subscribe(eventsResponse => {
@@ -75,5 +77,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.hasLastUpdated.next(true);
+  }
+
+  ngOnDestroy(): void {
   }
 }
