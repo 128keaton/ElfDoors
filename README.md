@@ -90,3 +90,16 @@
    ```bash
    $ git push heroku master
    ```
+## Displaying
+### Chrome
+#### macOS:
+    Start Google Chrome in kiosk mode:
+    ```bash
+    $ /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --kiosk --app='https://your-instance.elfdoors'
+    ```
+#### Linux:
+    Start Google Chrome in kiosk mode:
+    ```bash
+    $ /usr/bin/google-chrome --kiosk  --app='https://your-instance.elfdoors'
+    ```
+    
