@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {EventsComponent} from './views/events/events.component';
 import {PeopleComponent} from './views/people/people.component';
+import {MapComponent} from './views/map/map.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'people',
     component: PeopleComponent
+  },
+  {
+    path: 'map',
+    component: MapComponent
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' },

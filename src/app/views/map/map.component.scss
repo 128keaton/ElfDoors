@@ -1,0 +1,45 @@
+:host {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.doors-available {
+  padding: 2em;
+  min-height: 80px;
+
+  .door {
+    display: flex;
+    background-color: white;
+    max-width: 220px;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 25px;
+    h1 {
+      font-weight: normal;
+      font-size: 1em;
+      color: gray;
+      margin: 0 0 0 0.5em;
+    }
+    .status {
+      background-color: green;
+      display: block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid black;
+      border-radius: 100%;
+    }
+  }
+}
+
+.map-wrapper {
+  flex: 1;
+  background-color: #ff114c;
+}

@@ -15,6 +15,8 @@ import {EventUserPipe} from './pipes/event-user.pipe';
 import {PeopleComponent} from './views/people/people.component';
 import {EventIconPipe} from './pipes/event-icon.pipe';
 import {ToastrModule} from 'ngx-toastr';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MapComponent} from './views/map/map.component';
 
 @NgModule({
   declarations: [
@@ -27,11 +29,13 @@ import {ToastrModule} from 'ngx-toastr';
     EventUserPipe,
     PeopleComponent,
     EventIconPipe,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule,
+    DragDropModule,
     AppRoutingModule,
     IntelliAccessModule,
     ToastrModule.forRoot({

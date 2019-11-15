@@ -28,6 +28,7 @@ import {untilDestroyed} from 'ngx-take-until-destroy';
           </h1>
           <div class="links">
               <a class="link" [class.selected]="(currentPageTitle | async) === 'doors'" routerLink="/">Doors</a>
+              <a class="link" [class.selected]="(currentPageTitle | async) === 'map'" routerLink="/map">Map</a>
               <a class="link" [class.selected]="(currentPageTitle | async) === 'events'" routerLink="/events">Events</a>
               <a class="link" [class.selected]="(currentPageTitle | async) === 'people'" routerLink="/people">People</a>
           </div>
