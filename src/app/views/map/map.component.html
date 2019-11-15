@@ -1,9 +1,15 @@
 <div class="map">
   <div class="doors-available">
-    <div class="drag-drop-door-wrapper" cdkDrag>
-      <div class="door" cdkDragBoundary=".map">
+    <div *ngFor="let door of (doors | async)"
+         class="drag-drop-door-wrapper"
+         cdkDragBoundary=".map"
+         (cdkDragEnded)="dragEnded($event)"
+         (cdkDragStarted)="dragStarted($event)"
+         cdkDrag
+         data-id="{{door.id}}">
+      <div class="door">
         <div class="status"></div>
-        <h1>Door 1</h1>
+        <h1>{{door.name}}</h1>
       </div>
     </div>
   </div>
