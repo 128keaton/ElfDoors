@@ -1,6 +1,6 @@
 {
   "name": "elfdoors",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "ng": "ng",
     "start:frontend": "ng serve",
@@ -18,6 +18,7 @@
     "@angular/platform-browser": "~8.2.12",
     "@angular/platform-browser-dynamic": "~8.2.12",
     "@angular/router": "~8.2.12",
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "eva-icons": "^1.1.2",
     "express": "^4.17.1",

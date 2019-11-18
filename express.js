@@ -15,6 +15,8 @@ const http = require('http');
 const request = require('request');
 const figlet = require('figlet');
 const packageInfo = require('./package');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 
 // Configure logger
 signale.config({
@@ -27,12 +29,17 @@ const port = process.env.PORT || '80';
 const intelliURL = process.env.INTELLI_ENDPOINT || 'http://localhost';
 const intelliUsername = process.env.INTELLI_USERNAME || 'admin';
 const intelliPassword = process.env.INTELLI_PASSWORD || 'admin';
+const mapSavePath = __dirname + '/public/map.json';
 
 // Create root objects
 const app = express();
 
 // Configure express app
 app.set('port', port);
+
+// Enable the body-parser middleware
+app.use(bodyParser.json()); // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded()); // to support URL-encoded bodies
 
 // Add CORS header to any request
 app.use((req, res, next) => {
@@ -41,7 +48,7 @@ app.use((req, res, next) => {
 });
 
 // Pipe API requests to the intelli-m server
-app.use('/api', function(req, res) {
+app.use('/api', function (req, res) {
   const requestEndpoint = req.url.replace('/api', '');
 
   const url = burly(intelliURL)
@@ -55,11 +62,30 @@ app.use('/api', function(req, res) {
     signale.debug(`Requesting URL ${url}`);
   }
 
-  apiRequest.on("response", function() {
+  apiRequest.on("response", function () {
     apiRequest.pipe(res);
     apiRequest.resume();
-  }).on("error", function(err) {
+  }).on("error", function (err) {
     signale.error(err);
+  });
+});
+
+// POST and save the map save file JSON
+app.post('/save/map', function (req, res) {
+  fs.writeFile(mapSavePath, JSON.stringify(req.body), function () {
+    res.send(req.body);
+  });
+});
+
+// Return the map save file JSON
+app.get('/get/map', function (req, res) {
+  fs.readFile(mapSavePath, (err, data) => {
+    if (err) {
+      signale.error('No map file found at path: ' + mapSavePath);
+      res.send({});
+    }
+
+    res.send(data);
   });
 });
 
@@ -70,7 +96,7 @@ app.get('*', (req, res) => {
 });
 
 // Create the server
-http.createServer(app).listen(port, () => figlet(packageInfo.name, function(err, data) {
+http.createServer(app).listen(port, () => figlet(packageInfo.name, function (err, data) {
   if (!err) {
     console.log('===========================================');
     console.log(data);
