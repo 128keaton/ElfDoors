@@ -17,6 +17,7 @@ import {EventIconPipe} from './pipes/event-icon.pipe';
 import {ToastrModule} from 'ngx-toastr';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MapComponent} from './views/map/map.component';
+import { PositionedDoorDirective } from './components/positioned-door/positioned-door.directive';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {MapComponent} from './views/map/map.component';
     PeopleComponent,
     EventIconPipe,
     MapComponent,
+    PositionedDoorDirective,
   ],
   imports: [
     BrowserModule,

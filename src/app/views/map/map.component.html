@@ -3,11 +3,12 @@
     <div *ngFor="let door of (doors | async)"
          class="drag-drop-door-wrapper"
          cdkDragBoundary=".map"
+         [cdkDragData]="door"
          (cdkDragEnded)="dragEnded($event)"
          (cdkDragStarted)="dragStarted($event)"
          cdkDrag
          data-id="{{door.id}}">
-      <div class="door">
+      <div class="door" positionedDoorDirective [door]="door">
         <div class="status"></div>
         <h1>{{door.name}}</h1>
       </div>

@@ -41,9 +41,11 @@ app.set('port', port);
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded()); // to support URL-encoded bodies
 
-// Add CORS header to any request
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+// Use CORS for all requests
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization, Access-Control-Allow-Origin');
   next();
 });
 
@@ -81,11 +83,11 @@ app.post('/save/map', function (req, res) {
 app.get('/get/map', function (req, res) {
   fs.readFile(mapSavePath, (err, data) => {
     if (err) {
+      res.send(null);
       signale.error('No map file found at path: ' + mapSavePath);
-      res.send({});
+    } else {
+      res.send(data);
     }
-
-    res.send(data);
   });
 });
 
