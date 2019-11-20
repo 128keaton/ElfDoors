@@ -3,8 +3,11 @@ import {Serializable, Serialize, SerializeProperty} from 'ts-serializer';
 @Serialize({})
 export class IntelliDoorLocation extends Serializable {
   @SerializeProperty()
-  css: string;
+  name: string;
 
   @SerializeProperty()
-  name: string;
+  x: number;
+
+  @SerializeProperty()
+  y: number;
 }

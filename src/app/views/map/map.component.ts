@@ -2,16 +2,15 @@ import {AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChildren} fr
 import {IntelliDoorsService} from '../../services/intelli-access/services';
 import {LastUpdatedService} from '../../services/last-updated.service';
 import {PageTitleService} from '../../services/page-title.service';
-import {Observable} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 import {IntelliDoor} from '../../services/intelli-access/models/doors/intelli-door.model';
 import {untilDestroyed} from 'ngx-take-until-destroy';
 import {delay, map, repeatWhen, tap} from 'rxjs/operators';
 import {IntelliDoorStatus} from '../../services/intelli-access/models/status/intelli-door-status.enum';
-import {CdkDragEnd, CdkDragStart} from '@angular/cdk/drag-drop';
+import {CdkDrag, CdkDragEnd, CdkDragStart} from '@angular/cdk/drag-drop';
 import {IntelliMap} from '../../services/intelli-access/models/map/intelli-map.model';
 import {IntelliMapService} from '../../services/intelli-access/services/intelli-map.service';
 import {IntelliDoorLocation} from '../../services/intelli-access/models/map/intelli-door-location.model';
-import {PositionedDoorDirective} from '../../components/positioned-door/positioned-door.directive';
 
 @Component({
   selector: 'app-map',
@@ -21,10 +20,9 @@ import {PositionedDoorDirective} from '../../components/positioned-door/position
 export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   doors: Observable<IntelliDoor[]>;
   hasAnimated = false;
-  isEditing = true;
   currentMap: IntelliMap;
   doorLocations: IntelliDoorLocation[] = [];
-  @ViewChildren(PositionedDoorDirective) positionedDoorElements: QueryList<PositionedDoorDirective>;
+  doorLocationsChanged = new ReplaySubject<IntelliDoorLocation[]>();
 
 
   constructor(private doorsService: IntelliDoorsService,
@@ -35,48 +33,45 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   setDoorLocations(): void {
-    console.log('Iterating over', this.positionedDoorElements.length);
-    console.log('With door locations', this.doorLocations);
-
-    this.positionedDoorElements.changes.subscribe(() => {
-      this.updatePositionedDoors();
-    });
+    if (this.doorLocations.length > 0) {
+      this.doorLocationsChanged.next(this.doorLocations);
+    }
   }
 
-  private updatePositionedDoors() {
-    this.positionedDoorElements.forEach(doorElement => {
-      if (doorElement.door && doorElement.door.name) {
-        const doorLocation = this.doorLocations.find(existingDoorLocation => existingDoorLocation.name === doorElement.door.name);
-        if (doorLocation) {
-          doorElement.doorLocation = doorLocation;
-        }
-      }
-    });
+  doorPosition(forDoor: IntelliDoor): Observable<{x: number, y: number}> {
+    return this.doorLocationsChanged.pipe(
+      map(doorLocations => {
+        const foundDoorLocation = doorLocations.find(doorLocation => doorLocation.name === forDoor.name);
+        return {x: foundDoorLocation.x, y: foundDoorLocation.y};
+      })
+    );
   }
 
   dragEnded($event: CdkDragEnd) {
     const doorsDockWrapper = document.body.getElementsByClassName('doors-available').item(0) as HTMLElement;
     const isColliding = this.isColliding($event.source.element.nativeElement, doorsDockWrapper);
     const draggedDoor: IntelliDoor = $event.source.data;
-    const css = $event.source.element.nativeElement.style.transform;
+    const position = (isColliding ? {x: null, y: null} : $event.source.getFreeDragPosition());
 
     let doorLocation: IntelliDoorLocation = this.doorLocations.find(existingDoorLocation => existingDoorLocation.name === draggedDoor.name);
 
     if (!doorLocation) {
       doorLocation = new IntelliDoorLocation();
       doorLocation.name = draggedDoor.name;
-      doorLocation.css = (isColliding ? null : css);
+      doorLocation.x = position.x;
+      doorLocation.y = position.y;
       this.doorLocations.push(doorLocation);
     } else {
       doorLocation.name = draggedDoor.name;
-      doorLocation.css = (isColliding ? null : css);
+      doorLocation.x = position.x;
+      doorLocation.y = position.y;
     }
 
 
     if (this.currentMap) {
       this.currentMap.doors = this.doorLocations;
+   //   this.doorLocationsChanged.next(this.doorLocations);
       this.mapService.saveMap(this.currentMap).subscribe(res => console.log(res));
-      this.updatePositionedDoors();
     }
   }
 
@@ -106,10 +101,11 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   dragStarted($event: CdkDragStart) {
    // const source: any = $event.source;
   //  source._passiveTransform = { x: 0, y: 0 };
+    console.log('drag started', $event);
   }
 
   ngOnInit() {
-    if (this.isEditing === false) {
+    if (false) {
       this.doors = this.doorsService.getDoorsStatus().pipe(
         untilDestroyed(this),
         repeatWhen(complete => complete.pipe(delay(2000))),
