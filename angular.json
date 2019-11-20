@@ -136,6 +136,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "elfdoors"
+    }
+  },
+  "defaultProject": "elfdoors",
+  "cli": {
+    "analytics": false
+  }
 }
