@@ -1,21 +1,10 @@
 <div class="map">
-  <div class="doors-available">
-    <div *ngFor="let door of (doors | async)"
-         class="drag-drop-door-wrapper"
-         cdkDrag
-         cdkDragBoundary=".map"
-         [cdkDragData]="door"
-         (cdkDragEnded)="dragEnded($event)"
-         (cdkDragStarted)="dragStarted($event)"
-         [cdkDragFreeDragPosition]="doorPosition(door) | async"
-         data-id="{{door.id}}">
-      <div class="door">
-        <div class="status"></div>
-        <h1>{{door.name}}</h1>
-      </div>
+  <div class="map-wrapper">
+    <div style="height: 100%;"
+         leaflet
+         [leafletLayers]="doorMarkers"
+         (leafletMapReady)="onMapReady($event)"
+         [leafletOptions]="options">
     </div>
-  </div>
-  <div class="map-wrapper" cdkDropList>
-
   </div>
 </div>

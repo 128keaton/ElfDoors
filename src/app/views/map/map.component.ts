@@ -11,6 +11,7 @@ import {CdkDrag, CdkDragEnd, CdkDragStart} from '@angular/cdk/drag-drop';
 import {IntelliMap} from '../../services/intelli-access/models/map/intelli-map.model';
 import {IntelliMapService} from '../../services/intelli-access/services/intelli-map.service';
 import {IntelliDoorLocation} from '../../services/intelli-access/models/map/intelli-door-location.model';
+import {CRS, icon, imageOverlay, latLng, LatLngBoundsExpression, LatLngExpression, Layer, Map, marker} from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -24,6 +25,16 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   doorLocations: IntelliDoorLocation[] = [];
   doorLocationsChanged = new ReplaySubject<IntelliDoorLocation[]>();
 
+  doorMarkers: Layer[] = [];
+  mapImageBounds: LatLngBoundsExpression = [[0, 0], [1500, 1000]];
+  options = {
+    attributionControl: false,
+    crs: CRS.Simple,
+    layers: [
+      imageOverlay('/assets/map-test.jpg', this.mapImageBounds)
+    ],
+    minZoom: -5,
+  };
 
   constructor(private doorsService: IntelliDoorsService,
               private mapService: IntelliMapService,
@@ -32,13 +43,28 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     pageTitleService.updatePageTitle('Map');
   }
 
+  onMapReady(leafletMap: Map): void {
+    leafletMap.fitBounds(this.mapImageBounds);
+  }
+
   setDoorLocations(): void {
     if (this.doorLocations.length > 0) {
       this.doorLocationsChanged.next(this.doorLocations);
+      this.doorMarkers = this.doorLocations.filter(doorLocation => doorLocation.x && doorLocation.y).map(doorLocation => {
+        const doorMarkerPosition: LatLngExpression = [doorLocation.x, doorLocation.y];
+        return marker(doorMarkerPosition, {
+          icon: icon({
+            iconSize: [25, 41],
+            iconAnchor: [13, 41],
+            iconUrl: 'assets/marker-icon.png',
+            shadowUrl: 'assets/marker-shadow.png'
+          })
+        });
+      });
     }
   }
 
-  doorPosition(forDoor: IntelliDoor): Observable<{x: number, y: number}> {
+  doorPosition(forDoor: IntelliDoor): Observable<{ x: number, y: number }> {
     return this.doorLocationsChanged.pipe(
       map(doorLocations => {
         const foundDoorLocation = doorLocations.find(doorLocation => doorLocation.name === forDoor.name);
@@ -49,9 +75,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
   dragEnded($event: CdkDragEnd) {
     const doorsDockWrapper = document.body.getElementsByClassName('doors-available').item(0) as HTMLElement;
-    const isColliding = this.isColliding($event.source.element.nativeElement, doorsDockWrapper);
     const draggedDoor: IntelliDoor = $event.source.data;
-    const position = (isColliding ? {x: null, y: null} : $event.source.getFreeDragPosition());
+    const position = $event.source.getFreeDragPosition();
 
     let doorLocation: IntelliDoorLocation = this.doorLocations.find(existingDoorLocation => existingDoorLocation.name === draggedDoor.name);
 
@@ -70,7 +95,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.currentMap) {
       this.currentMap.doors = this.doorLocations;
-   //   this.doorLocationsChanged.next(this.doorLocations);
+      //   this.doorLocationsChanged.next(this.doorLocations);
       this.mapService.saveMap(this.currentMap).subscribe(res => console.log(res));
     }
   }
@@ -99,8 +124,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   dragStarted($event: CdkDragStart) {
-   // const source: any = $event.source;
-  //  source._passiveTransform = { x: 0, y: 0 };
+    // const source: any = $event.source;
+    //  source._passiveTransform = { x: 0, y: 0 };
     console.log('drag started', $event);
   }
 
@@ -121,34 +146,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         tap(() => this.lastUpdatedService.now())
       );
     }
-  }
-
-  getIcon(door: IntelliDoor): string {
-    if (door.status !== IntelliDoorStatus.close) {
-      return 'eva-unlock-outline';
-    }
-    return 'eva-lock-outline';
-  }
-
-  getAlertIcon(door: IntelliDoor): string {
-    switch (door.status) {
-      case IntelliDoorStatus.heldOpen:
-        return 'eva-alert-circle';
-      case IntelliDoorStatus.forcedOpen:
-        return 'eva-alert-circle';
-    }
-  }
-
-  private isColliding(element1: HTMLElement, element2: HTMLElement): boolean {
-    const rect1 = element1.getBoundingClientRect();
-    const rect2 = element2.getBoundingClientRect();
-
-    return !(
-      rect1.top > rect2.bottom ||
-      rect1.right < rect2.left ||
-      rect1.bottom < rect2.top ||
-      rect1.left > rect2.right
-    );
   }
 
   ngOnDestroy(): void {

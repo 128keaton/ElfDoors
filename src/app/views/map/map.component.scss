@@ -1,48 +1,13 @@
-:host {
-  width: 100%;
+.map, .map-wrapper {
   height: 100%;
-  display: block;
 }
 
 .map {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  margin-left: 0.5em;
 }
 
-.doors-available {
-  padding: 2em;
-  min-height: 80px;
-  display: flex;
-
-  .door {
-    display: flex;
-    background-color: white;
-    max-width: 220px;
-    min-width: 80px;
-    margin-right: 1em;
-    align-items: center;
-    padding: 0.5rem;
-    border-radius: 25px;
-    h1 {
-      font-weight: normal;
-      font-size: 1em;
-      color: gray;
-      margin: 0 0 0 0.5em;
-    }
-    .status {
-      background-color: green;
-      display: block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid black;
-      border-radius: 100%;
-    }
+::ng-deep {
+  .leaflet-container {
+    background: transparent;
   }
-}
-
-.map-wrapper {
-  flex: 1;
-  background-color: #ff114c;
 }

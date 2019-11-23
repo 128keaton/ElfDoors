@@ -27,12 +27,18 @@
               "src/favicon-32x32.png",
               "src/apple-touch-icon.png",
               "src/android-chrome-192x192.png",
-              "src/android-chrome-512x512.png"
+              "src/android-chrome-512x512.png",
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images",
+                "output": "assets/"
+              }
             ],
             "styles": [
               "src/styles.css",
               "node_modules/eva-icons/style/eva-icons.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": []
           },
@@ -100,12 +106,18 @@
               "src/favicon-32x32.png",
               "src/apple-touch-icon.png",
               "src/android-chrome-192x192.png",
-              "src/android-chrome-512x512.png"
+              "src/android-chrome-512x512.png",
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images",
+                "output": "assets/"
+              }
             ],
             "styles": [
               "src/styles.css",
               "node_modules/eva-icons/style/eva-icons.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": []
           }

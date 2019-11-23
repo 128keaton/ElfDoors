@@ -17,6 +17,7 @@ import {EventIconPipe} from './pipes/event-icon.pipe';
 import {ToastrModule} from 'ngx-toastr';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MapComponent} from './views/map/map.component';
+import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {MapComponent} from './views/map/map.component';
     RouterModule,
     DragDropModule,
     AppRoutingModule,
+    LeafletModule,
     IntelliAccessModule,
     ToastrModule.forRoot({
       timeOut: 10000,
