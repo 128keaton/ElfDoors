@@ -11,7 +11,20 @@ import {CdkDrag, CdkDragEnd, CdkDragStart} from '@angular/cdk/drag-drop';
 import {IntelliMap} from '../../services/intelli-access/models/map/intelli-map.model';
 import {IntelliMapService} from '../../services/intelli-access/services/intelli-map.service';
 import {IntelliDoorLocation} from '../../services/intelli-access/models/map/intelli-door-location.model';
-import {CRS, icon, imageOverlay, latLng, LatLngBoundsExpression, LatLngExpression, Layer, Map, marker} from 'leaflet';
+import {
+  CRS,
+  DragEndEventHandlerFn,
+  icon,
+  ImageOverlay,
+  imageOverlay,
+  latLng,
+  LatLngBoundsExpression,
+  LatLngExpression,
+  Layer, LeafletEventHandlerFn, LeafletEventHandlerFnMap,
+  Map,
+  Marker,
+  marker, Point
+} from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -27,11 +40,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
   doorMarkers: Layer[] = [];
   mapImageBounds: LatLngBoundsExpression = [[0, 0], [1500, 1000]];
+  mapOverlay = imageOverlay('/assets/map-test.jpg', this.mapImageBounds);
   options = {
     attributionControl: false,
     crs: CRS.Simple,
     layers: [
-      imageOverlay('/assets/map-test.jpg', this.mapImageBounds)
+      this.mapOverlay
     ],
     minZoom: -5,
   };
@@ -50,9 +64,15 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   setDoorLocations(): void {
     if (this.doorLocations.length > 0) {
       this.doorLocationsChanged.next(this.doorLocations);
-      this.doorMarkers = this.doorLocations.filter(doorLocation => doorLocation.x && doorLocation.y).map(doorLocation => {
-        const doorMarkerPosition: LatLngExpression = [doorLocation.x, doorLocation.y];
-        return marker(doorMarkerPosition, {
+      this.doorMarkers = this.doorLocations.map(doorLocation => {
+        let doorMarkerPosition: LatLngExpression = [doorLocation.x, doorLocation.y];
+
+        if (!doorLocation.x && !doorLocation.y) {
+          doorMarkerPosition = this.randomPoints(this.mapOverlay);
+        }
+
+        const doorMarker = marker(doorMarkerPosition, {
+          draggable: true,
           icon: icon({
             iconSize: [25, 41],
             iconAnchor: [13, 41],
@@ -60,8 +80,20 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             shadowUrl: 'assets/marker-shadow.png'
           })
         });
+
+        doorMarker.on(this.onDragged());
+        return doorMarker;
       });
     }
+  }
+
+  onDragged(): LeafletEventHandlerFnMap {
+   return {
+     dragend: (event => {
+      const newPoint: Point = event.sourceTarget._newPos;
+      console.log('dragged:', newPoint.x, newPoint.y, event);
+    })
+   };
   }
 
   doorPosition(forDoor: IntelliDoor): Observable<{ x: number, y: number }> {
@@ -149,5 +181,24 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+  }
+
+  randomPoints(inLayer: ImageOverlay): LatLngExpression {
+    const bounds = inLayer.getBounds();
+    const xMin  = bounds.getEast();
+    const xMax  = bounds.getWest();
+    const yMin  = bounds.getSouth();
+    const yMax  = bounds.getNorth();
+
+    const lat = yMin + (Math.random() * (yMax - yMin));
+    const lng = xMin + (Math.random() * (xMax - xMin));
+
+    const inside = bounds.contains([lat, lng]);
+
+    if (inside) {
+      return [lat, lng];
+    } else {
+      return this.randomPoints(inLayer);
+    }
   }
 }
