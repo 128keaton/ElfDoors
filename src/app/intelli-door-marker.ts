@@ -1,10 +1,11 @@
-import {DivIcon, Marker, MarkerOptions, Map, LatLng, ImageOverlay, LatLngExpression, latLng} from 'leaflet';
-import {IntelliDoorLocation} from './services/intelli-access/models/map/intelli-door-location.model';
+import {DivIcon, Marker, MarkerOptions, Map, LatLng} from 'leaflet';
+import {IntelliDoor} from './services/intelli-access/models/doors/intelli-door.model';
+import {Observable} from 'rxjs';
 
 
 export class DoorMarker extends Marker {
-  public readonly door: IntelliDoorLocation;
-  public readonly parentOverlay: ImageOverlay;
+  public readonly door: Observable<IntelliDoor>;
+  public doorName: string;
 
   private iconWidth = 22;
   private iconHeight = 22;
@@ -19,47 +20,20 @@ export class DoorMarker extends Marker {
 
   private get iconHTML(): string {
     return `<div class="door-marker">
-<div class="door-status"></div>
-<h1 class="door-name">${this.door.name}</h1>
-</div>`;
+                <div class="door-status"></div>
+                <h1 class="door-name">${this.doorName}</h1>
+            </div>`;
   }
 
-  constructor(door: IntelliDoorLocation, parentOverlay: ImageOverlay, options: MarkerOptions = null) {
-    super(this.getCoords(door.x, door.y), options);
+  constructor(door: Observable<IntelliDoor>, coordinates: LatLng, options: MarkerOptions = null) {
+    super(coordinates, options);
     this.door = door;
-    this.parentOverlay = parentOverlay;
     this.options.icon = this.icon;
-  }
-
-  private getCoords(x: number, y: number): LatLng {
-    if (!x && !y) {
-      return latLng(this.randomPoints(this.parentOverlay));
-    }
-
-    return new LatLng(x, y);
+    this.door.subscribe($door => this.doorName = $door.name);
   }
 
   onAdd(map: Map): this {
     super.onAdd(map);
     return this;
-  }
-
-  randomPoints(inLayer: ImageOverlay): LatLngExpression {
-    const bounds = inLayer.getBounds();
-    const xMin = bounds.getEast();
-    const xMax = bounds.getWest();
-    const yMin = bounds.getSouth();
-    const yMax = bounds.getNorth();
-
-    const lat = yMin + (Math.random() * (yMax - yMin));
-    const lng = xMin + (Math.random() * (xMax - xMin));
-
-    const inside = bounds.contains([lat, lng]);
-
-    if (inside) {
-      return [lat, lng];
-    } else {
-      return this.randomPoints(inLayer);
-    }
   }
 }
