@@ -25,6 +25,7 @@ import {
   Marker,
   marker, Point
 } from 'leaflet';
+import {DoorMarker} from '../../intelli-door-marker';
 
 @Component({
   selector: 'app-map',
@@ -65,20 +66,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.doorLocations.length > 0) {
       this.doorLocationsChanged.next(this.doorLocations);
       this.doorMarkers = this.doorLocations.map(doorLocation => {
-        let doorMarkerPosition: LatLngExpression = [doorLocation.x, doorLocation.y];
-
-        if (!doorLocation.x && !doorLocation.y) {
-          doorMarkerPosition = this.randomPoints(this.mapOverlay);
-        }
-
-        const doorMarker = marker(doorMarkerPosition, {
-          draggable: true,
-          icon: icon({
-            iconSize: [25, 41],
-            iconAnchor: [13, 41],
-            iconUrl: 'assets/marker-icon.png',
-            shadowUrl: 'assets/marker-shadow.png'
-          })
+        const doorMarker = new DoorMarker(doorLocation, {
+          draggable: true
         });
 
         doorMarker.on(this.onDragged());
@@ -181,24 +170,5 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-  }
-
-  randomPoints(inLayer: ImageOverlay): LatLngExpression {
-    const bounds = inLayer.getBounds();
-    const xMin  = bounds.getEast();
-    const xMax  = bounds.getWest();
-    const yMin  = bounds.getSouth();
-    const yMax  = bounds.getNorth();
-
-    const lat = yMin + (Math.random() * (yMax - yMin));
-    const lng = xMin + (Math.random() * (xMax - xMin));
-
-    const inside = bounds.contains([lat, lng]);
-
-    if (inside) {
-      return [lat, lng];
-    } else {
-      return this.randomPoints(inLayer);
-    }
   }
 }
