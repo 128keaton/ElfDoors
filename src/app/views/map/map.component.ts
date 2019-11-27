@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {IntelliDoorsService} from '../../services/intelli-access/services';
 import {LastUpdatedService} from '../../services/last-updated.service';
 import {PageTitleService} from '../../services/page-title.service';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable, ReplaySubject} from 'rxjs';
 import {IntelliDoor} from '../../services/intelli-access/models/doors/intelli-door.model';
 import {map, tap} from 'rxjs/operators';
 import {IntelliMap} from '../../services/intelli-access/models/map/intelli-map.model';
@@ -17,12 +17,13 @@ import {DoorMarker} from '../../intelli-door-marker';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
-  doorsAvailable: IntelliDoorLocation[] = [];
   doorsOnMap: IntelliDoorLocation[] = [];
+  currentMap: Observable<IntelliMap>;
   doors: Observable<IntelliDoor[]>;
-  currentMap: IntelliMap;
 
-  doorMarkers: Layer[] = [];
+  doorsAvailable: ReplaySubject<IntelliDoor[]> = new ReplaySubject<IntelliDoor[]>();
+  doorMarkers: DoorMarker[] = [];
+
   mapImageBounds: LatLngBoundsExpression = [[0, 0], [1500, 1000]];
   mapOverlay = imageOverlay('/assets/map-test.jpg', this.mapImageBounds);
   options = {
@@ -37,6 +38,45 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private doorsService: IntelliDoorsService, private mapService: IntelliMapService,
               private lastUpdatedService: LastUpdatedService, pageTitleService: PageTitleService) {
     pageTitleService.updatePageTitle('Map');
+
+
+    this.doors = this.doorsService.getDoorsStatus().pipe(
+      map(doorsResponse => doorsResponse.doors),
+      tap(() => this.lastUpdatedService.now())
+    );
+
+    this.currentMap = this.mapService.getMap();
+
+    forkJoin([this.doors, this.currentMap]).subscribe(results => {
+      const intelliDoors: IntelliDoor[] = results[0];
+      const intelliMap: IntelliMap = results[1];
+      const doorLocationNames = intelliMap.doors.filter(doorLocation => doorLocation.x && doorLocation.y)
+                                                .map(doorLocation => doorLocation.name);
+
+      const doorsAvailable = intelliDoors.filter(door => {
+        return !doorLocationNames.includes(door.name);
+      });
+
+
+      console.log('Doors available to drag:', doorsAvailable);
+
+
+      this.doorMarkers = intelliMap.doors.filter(doorLocation => doorLocation.x && doorLocation.y)
+        .map(doorLocation => {
+          const door = intelliDoors.find(intelliDoor => doorLocation.name === intelliDoor.name);
+          const doorMarker =  new DoorMarker(door, latLng(doorLocation.y, doorLocation.x), {
+            draggable: true
+          });
+
+          doorMarker.on(this.onDragged());
+
+          return doorMarker;
+        });
+
+      console.log('Door markers:', this.doorMarkers);
+      this.doorsAvailable.next(doorsAvailable);
+    });
+
   }
 
   onMapReady(leafletMap: Map): void {
@@ -53,50 +93,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.mapService.getMap().subscribe(intelliMap => {
-      if (intelliMap === null || !intelliMap.doors) {
-        this.currentMap = new IntelliMap();
-      } else {
-        const parsedIntelliMap = new IntelliMap();
-        parsedIntelliMap.deserialize(intelliMap);
-        this.currentMap = parsedIntelliMap;
-      }
-
-      if (this.currentMap.doors) {
-        this.doorsAvailable = this.currentMap.doors.filter(doorLocation => !doorLocation.x && !doorLocation.y);
-        this.doorsOnMap = this.currentMap.doors.filter(doorLocation => doorLocation.x && doorLocation.y);
-      } else {
-        this.doorsAvailable = [];
-        this.doorsOnMap = [];
-      }
-
-      this.updateDoorMarkers();
-    });
   }
 
   private updateDoorMarkers() {
-    this.doorMarkers = this.doorsOnMap
-      .filter(doorLocation => doorLocation.x && doorLocation.y)
-      .map(doorLocation => {
-        const coords = latLng(doorLocation.x, doorLocation.y);
-        const door = this.doors.pipe(
-          map(doors => doors.find(aDoor => aDoor.name === doorLocation.name))
-        );
-
-        const doorMarker = new DoorMarker(door, coords, {
-          draggable: true
-        });
-
-        doorMarker.on(this.onDragged());
-        return doorMarker;
-      });
   }
 
   ngOnInit() {
-    this.doors = this.doorsService.getDoorsStatus().pipe(
-      map(doorsResponse => doorsResponse.doors),
-      tap(() => this.lastUpdatedService.now())
-    );
   }
 
   ngOnDestroy(): void {

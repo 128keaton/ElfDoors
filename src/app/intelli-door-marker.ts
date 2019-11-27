@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 
 
 export class DoorMarker extends Marker {
-  public readonly door: Observable<IntelliDoor>;
+  public readonly door: IntelliDoor;
   public doorName: string;
 
   private iconWidth = 22;
@@ -20,16 +20,16 @@ export class DoorMarker extends Marker {
 
   private get iconHTML(): string {
     return `<div class="door-marker">
-                <div class="door-status"></div>
-                <h1 class="door-name">${this.doorName}</h1>
+                <div class="status"></div>
+                <h1 class="name">${this.doorName}</h1>
             </div>`;
   }
 
-  constructor(door: Observable<IntelliDoor>, coordinates: LatLng, options: MarkerOptions = null) {
+  constructor(door: IntelliDoor, coordinates: LatLng, options: MarkerOptions = null) {
     super(coordinates, options);
     this.door = door;
+    this.doorName = this.door.name;
     this.options.icon = this.icon;
-    this.door.subscribe($door => this.doorName = $door.name);
   }
 
   onAdd(map: Map): this {

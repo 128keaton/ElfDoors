@@ -1,6 +1,9 @@
 <div class="map">
-  <div class="doors-available">
-
+  <div class="doors-available" cdkDropList>
+    <div class="door-available" *ngFor="let door of doorsAvailable|async" cdkDrag cdkDragBoundary=".map">
+      <div class="status no-status"></div>
+      <h1 class="name">{{door.name}}</h1>
+    </div>
   </div>
   <div class="map-wrapper">
     <div style="height: 100%;"
