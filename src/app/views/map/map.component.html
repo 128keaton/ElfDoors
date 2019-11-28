@@ -1,6 +1,6 @@
 <div class="map">
-  <div class="doors-available" cdkDropList>
-    <div class="door-available" *ngFor="let door of doorsAvailable|async" cdkDrag cdkDragBoundary=".map">
+  <div class="doors-available" cdkDropList cdkDropListOrientation="horizontal">
+    <div class="door-available" *ngFor="let door of doorsAvailable|async" cdkDrag (cdkDragReleased)="dropped($event)" cdkDragBoundary=".map">
       <div class="status no-status"></div>
       <h1 class="name">{{door.name}}</h1>
     </div>

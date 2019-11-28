@@ -9,37 +9,62 @@
   left: 0;
   right: 0;
   padding: 2.5em;
-  top: 0;
+  bottom: 0;
   position: absolute;
   z-index: 1000;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 ::ng-deep {
+  .status-forced-open {
+    background-color: #ff6a5e;
+  }
+
+  .status-held-open {
+    background-color: #FFF026;
+  }
+
+  .status-open {
+    background-color: orange;
+  }
+
+  .status-closed {
+    background-color: #41c260;
+  }
+
   .door-available, .door-marker {
+    box-shadow: 0 4px 10px 1px rgba(0, 0, 0, 0.34);
     display: flex;
     background-color: white;
-    max-width: 220px;
-    min-width: 80px;
+    width: 100px;
+    height: 25px;
     margin-right: 1em;
-    align-items: center;
     padding: 0.5rem;
     border-radius: 25px;
 
     h1 {
-      font-weight: normal;
-      font-size: 1em;
-      color: gray;
-      margin: 0 0 0 0.5em;
+      font-weight: bold;
+      font-size: 16px!important;
+      color: #505150;
+      margin: 0 0.5em 0 0;
+      text-align: right;
+      flex: 1;
     }
 
     .status {
-      background-color: green;
+      background-color: gray;
       display: block;
       width: 20px;
       height: 20px;
-      border: 2px solid black;
       border-radius: 100%;
     }
+
+  }
+
+  .door-marker {
+    align-items: center;
   }
 }
 
@@ -51,5 +76,34 @@
 ::ng-deep {
   .leaflet-container {
     background: transparent;
+  }
+
+  .leaflet-top, .leaflet-left {
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+
+  .leaflet-control-zoom {
+    box-shadow: unset;
+  }
+
+  .leaflet-control-zoom-out, .leaflet-control-zoom-in {
+    box-shadow: 0 4px 10px 1px rgba(0, 0, 0, 0.34);
+    border-radius: 100% !important;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 35px;
+    line-height: 120% !important;
+    color: #000000ab !important;
+    border-bottom: none !important;
+    font-weight: 100;
+  }
+
+  .leaflet-control-zoom-out {
+    margin-top: 0.5em;
+  }
+
+  .leaflet-image-layer {
+    border-radius: 5px;
   }
 }

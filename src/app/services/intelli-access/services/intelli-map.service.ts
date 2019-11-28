@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {dotenv} from '../config/dotenv';
 import {IntelliMap} from '../models/map/intelli-map.model';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,13 @@ export class IntelliMapService {
       url = `http://${this.config.host}:${this.config.port}${url}`;
     }
 
-    return this.httpClient.get<IntelliMap>(url);
+    return this.httpClient.get<IntelliMap>(url).pipe(
+      map(mapResponse => {
+        const newMap = new IntelliMap();
+        newMap.deserialize(mapResponse);
+        return newMap;
+      })
+    );
   }
 
   public saveMap(updatedMap: IntelliMap): Observable<object> {

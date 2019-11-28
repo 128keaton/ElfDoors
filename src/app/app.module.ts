@@ -30,7 +30,7 @@ import {LeafletModule} from '@asymmetrik/ngx-leaflet';
     EventUserPipe,
     PeopleComponent,
     EventIconPipe,
-    MapComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
