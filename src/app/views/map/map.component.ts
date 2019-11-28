@@ -90,10 +90,11 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     const doorName = event.source.element.nativeElement.innerText;
     const door = this.intelliDoorsSubject.value.find(aDoor => aDoor.name === doorName);
 
+    console.log(event.source.element.nativeElement.clientLeft);
     event.source.dropped.subscribe(dropped => {
       const doorLocation = new IntelliDoorLocation();
-      const x = dropped.distance.x;
-      const y = dropped.distance.y;
+      const x = 500;
+      const y = 750;
       const doorMarker = this.createDoorMarker(x, y, door);
 
       doorLocation.x = x;
@@ -109,10 +110,18 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     this.doorsAvailable.next(currentDoorsAvailable);
   }
 
+  // Smooth zoom in/out because updating kills the scaling
   onMapReady(leafletMap: Map): void {
     leafletMap.fitBounds(this.mapImageBounds);
+    leafletMap.on({
+      zoomstart: () => {
+        this.isEditing = true;
+      },
+      zoomend: () => {
+        this.isEditing = false;
+      }
+    });
   }
-
 
   onDragged(marker: DoorMarker): LeafletEventHandlerFnMap {
     return {

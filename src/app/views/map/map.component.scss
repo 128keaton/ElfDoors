@@ -19,19 +19,19 @@
 
 ::ng-deep {
   .status-forced-open {
-    background-color: #ff6a5e;
+    background-color: #ff6a5e!important;
   }
 
   .status-held-open {
-    background-color: #FFF026;
+    background-color: #FFF026!important;
   }
 
   .status-open {
-    background-color: orange;
+    background-color: orange!important;
   }
 
   .status-closed {
-    background-color: #41c260;
+    background-color: #41c260!important;
   }
 
   .door-available, .door-marker {
@@ -41,6 +41,7 @@
     width: 100px;
     height: 25px;
     margin-right: 1em;
+    align-items: center;
     padding: 0.5rem;
     border-radius: 25px;
 
@@ -61,10 +62,6 @@
       border-radius: 100%;
     }
 
-  }
-
-  .door-marker {
-    align-items: center;
   }
 }
 
