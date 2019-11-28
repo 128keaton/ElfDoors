@@ -46,5 +46,3 @@ testem.log
 Thumbs.db
 .env
 
-# Saved files
-public/map.json
